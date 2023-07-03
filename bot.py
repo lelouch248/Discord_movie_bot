@@ -1,5 +1,10 @@
+import os
+
 import discord
 import responses
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 async def send_message(message, user_message, is_private):
@@ -12,7 +17,6 @@ async def send_message(message, user_message, is_private):
 
 
 def run_discord_bot():
-    TOKEN = 'MTEyNTA4Nzg4MzE0NjAzOTM5Nw.Gd-c7S._P1BJn50COzTo6ZVQ-p4Eur8W_kjmHAI8BAfro'
     intent = discord.Intents.default()
     intent.message_content = True
     client = discord.Client(intents=intent)
@@ -38,4 +42,4 @@ def run_discord_bot():
         else:
             await send_message(message, user_message, is_private=False)
 
-    client.run(TOKEN)
+    client.run(os.getenv('TOKEN'))

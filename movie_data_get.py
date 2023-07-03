@@ -1,14 +1,17 @@
+import os
 import requests
 import discord
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def get_movie_data(movie_name):
-    API_KEY = '9277c4362eea45da57fcca447fa702db'
+    API_KEY =os.getenv('API_KEY')
     url = "https://api.themoviedb.org/3/search/movie"
     query = movie_name
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5Mjc3YzQzNjJlZWE0NWRhNTdmY2NhNDQ3ZmE3MDJkYiIsInN1YiI6IjY0YTE2NjJhMGNiMzM1MDEzOGZkNTMxYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FzLzW06FI6bmAbDgShv5dGSqdshRK8whgG-gI_ZVkKY"
+        "Authorization": F"Bearer {os.getenv('Auth')}"
     }
 
     params = {
@@ -54,7 +57,7 @@ def get_movie_by_id(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}"
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5Mjc3YzQzNjJlZWE0NWRhNTdmY2NhNDQ3ZmE3MDJkYiIsInN1YiI6IjY0YTE2NjJhMGNiMzM1MDEzOGZkNTMxYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FzLzW06FI6bmAbDgShv5dGSqdshRK8whgG-gI_ZVkKY"
+        "Authorization": F"Bearer {os.getenv('Auth')}"
     }
     response = requests.get(url, headers=headers)
     return response.json()
