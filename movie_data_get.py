@@ -11,7 +11,7 @@ def get_movie_data(movie_name):
     query = movie_name
     headers = {
         "accept": "application/json",
-        "Authorization": F"Bearer {os.getenv('Auth')}"
+        "Authorization": F"Bearer {os.getenv('AUTH')}"
     }
 
     params = {
@@ -43,11 +43,11 @@ def create_movie_response(movie_data):
     genre_names = get_genre_names(genre_ids)
 
     embed = discord.Embed(title=f"Movie Name: {movie_name}",
-                          description=f"Rating: {movie_rating}\n\nSummary:\n{summary}", color=0xF9D342)
+                          description=f"Summary:\n{summary}", color=0xF9D342)
     embed.set_image(url=f"https://image.tmdb.org/t/p/original{poster_path}")
     embed.add_field(name="Original Title", value=original_title, inline=False)
-    embed.add_field(name="Release Date", value=release_date, inline=False)
-    embed.add_field(name="Genres", value=", ".join(genre_names), inline=False)
+    embed.add_field(name="Release Date   \u200b   Rating   \u200b   Genres",
+                    value=f"{release_date}   \u200b   {movie_rating}   \u200b   {', '.join(genre_names)}", inline=False)
     embed.add_field(name="Tagline", value=tagline, inline=False)
 
     return embed
@@ -57,7 +57,7 @@ def get_movie_by_id(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}"
     headers = {
         "accept": "application/json",
-        "Authorization": F"Bearer {os.getenv('Auth')}"
+        "Authorization": F"Bearer {os.getenv('AUTH')}"
     }
     response = requests.get(url, headers=headers)
     return response.json()
