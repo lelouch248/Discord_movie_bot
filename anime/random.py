@@ -7,11 +7,9 @@ load_dotenv()
 
 
 def random_anime():
-    print("inside random")
     url = "https://api.jikan.moe/v4/random/anime"
     response = requests.get(url)
     data = response.json()['data']
-    print(data)
     image_url = data['images']['jpg']['large_image_url']
     title = data['title']
     anime_type = data['type']
@@ -36,6 +34,5 @@ def random_anime():
     # embed.add_field(name="Studios", value=studios, inline=True)
     embed.add_field(name="Synopsis", value=synopsis, inline=False)
     embed.add_field(name="Genres", value=", ".join(genres), inline=False)
-    print(embed.to_dict())  # This is just to display the embedded message in dictionary format
 
     return embed

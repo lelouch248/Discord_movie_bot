@@ -37,11 +37,14 @@ def create_movie_response(movie_data):
     genre_ids = movie_data["genre_ids"]
     movie_id = movie_data["id"]
     movie_id_data = get_movie_by_id(movie_id)
+    movie_recomendations = get_movie_recomendations(movie_id)
+    print(movie_recomendations)
     tagline = movie_id_data.get("tagline", "")
 
     # Convert genre IDs to genre names (You may need to map genre IDs to genre names using the TMDb API)
     genre_names = get_genre_names(genre_ids)
-
+    recommended_movie_names = [movie["title"] for movie in movie_recomendations]
+    print(recommended_movie_names)
     embed = discord.Embed(title=f"Movie Name: {movie_name}",
                           description=f"Summary:\n{summary}", color=0xF9D342)
     embed.set_image(url=f"https://image.tmdb.org/t/p/original{poster_path}")
@@ -49,6 +52,7 @@ def create_movie_response(movie_data):
     embed.add_field(name="Release Date   \u200b   Rating   \u200b   Genres",
                     value=f"{release_date}   \u200b   {movie_rating}   \u200b   {', '.join(genre_names)}", inline=False)
     embed.add_field(name="Tagline", value=tagline, inline=False)
+    embed.add_field(name="Recommended Movies", value=", ".join(recommended_movie_names), inline=False)
 
     return embed
 
@@ -61,6 +65,19 @@ def get_movie_by_id(movie_id):
     }
     response = requests.get(url, headers=headers)
     return response.json()
+
+
+def get_movie_recomendations(movie_id):
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}/recommendations?language=en-US&page=1"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {os.getenv('AUTH')}"
+    }
+
+    response = requests.get(url, headers=headers)
+    return response.json()['results']
+
 
 
 def get_genre_names(genre_ids):
